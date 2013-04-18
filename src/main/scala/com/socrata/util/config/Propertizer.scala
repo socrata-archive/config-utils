@@ -62,16 +62,15 @@ object Propertizer extends ((String, Config) => Properties) {
         obj
       }
 
-    for((k, v) <- remainder.root.asScala.mapValues(_.valueType).iterator) {
-      v match {
-        case ConfigValueType.NULL => /* pass */
-        case ConfigValueType.OBJECT =>
-          subtree(props, nestedRoot(k), remainder.getConfig(k))
-        case ConfigValueType.LIST =>
-          props.put(nestedRoot(k), remainder.getStringList(k).asScala.mkString(","))
-        case _ =>
-          props.put(nestedRoot(k), remainder.getString(k))
-      }
+    remainder.root.asScala.mapValues(_.valueType) foreach {
+      case (_, ConfigValueType.NULL) =>
+        // pass
+      case (k, ConfigValueType.OBJECT) =>
+        subtree(props, nestedRoot(k), remainder.getConfig(k))
+      case (k, ConfigValueType.LIST) =>
+        props.put(nestedRoot(k), remainder.getStringList(k).asScala.mkString(","))
+      case (k, _) =>
+        props.put(nestedRoot(k), remainder.getString(k))
     }
   }
 
