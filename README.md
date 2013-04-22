@@ -1,5 +1,1 @@
-config-utils
-============
-
-Random utility objects for working with [Typesafe's
-configuration library](https://github.com/typesafehub/config)
+This project has been merged into [socrata-thirdparty-utils](https://github.com/socrata/socrata-thirdparty-utils).
